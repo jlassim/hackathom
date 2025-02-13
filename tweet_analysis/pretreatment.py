@@ -16,24 +16,10 @@ df_cleaned = df.loc[:, df.isnull().sum() <= threshold]
 
 #Removes rows where all columns are identical.
 df = df.drop_duplicates()
-'''
-# Check missing values after deletion
-missing_after_deletion = df_cleaned.isnull().sum()
-print("\nMissing values after removing columns with more than 800 missing values:")
-print(missing_after_deletion)
 
-# Display a sample of the data after column removal
-print("\nSample data after column removal:")
-print(df_cleaned.head())
-'''
 # Step 1: Fill missing values in the 'Followers_count' column with 0
 df['Followers_count'] = pd.to_numeric(df['Followers_count'], errors='coerce')  # Convert to numeric, replacing errors with NaN
 df['Followers_count'] = df['Followers_count'].fillna(0)
-
-# Step 2: Fill missing values in the 'Like_count' column with the most frequent value (mode)
-# Ensure the 'Like_count' column is numeric
-df['Like_count'] = pd.to_numeric(df['Like_count'], errors='coerce')  # Convert to numeric, replacing errors with NaN
-df['Like_count'] = df['Like_count'].fillna(df['Like_count'].mode()[0])  # Replace NaN with the most frequent value
 
 # Step 3: Fill missing values in the 'Description' column with 'Not specified'
 df['Description'] = df['Description'].fillna('Not specified')
@@ -63,8 +49,6 @@ df['All_Hashtags'] = df['All_Hashtags'].apply(
     lambda x: ast.literal_eval(x) if isinstance(x, str) and x.startswith("[") 
     else (x.split() if isinstance(x, str) and x.lower() != "no hashtags" else [])
 )
-# Step 8: Fill missing values for 'Retweet_count' with 0
-df['Retweet_count'] = df['Retweet_count'].fillna(0)
 
 # Fonction pour nettoyer les textes des tweets
 
@@ -125,6 +109,7 @@ df['engagement_score'] = (2 * df['Retweet_count']) + df['Like_count']  # Based o
 # Calculate the engagement rate (engagement score relative to the number of followers)
 df['engagement_rate'] = df['engagement_score'] / (df['Followers_count'] + 1)  # Avoid division by zero
 
+'''
 # Calculate the virality score (engagement relative to views) - assuming you have views data, otherwise skip
 # df['virality_score'] = df['engagement_score'] / (df['Views_count'] + 1)  # Use only if the 'Views_count' column exists
 
@@ -150,6 +135,8 @@ df['num_hashtags'] = df['All_Hashtags'].apply(lambda x: len(x) if isinstance(x, 
 
 # Generate a popularity score based on the number of likes and retweets
 df['popularity_score'] = df['Like_count'] + 2 * df['Retweet_count']
-
+'''
 print(df.columns)
 df.to_csv("trending_tweets_cleaned.csv", index=False)  # Sauvegarde en CSV
+
+

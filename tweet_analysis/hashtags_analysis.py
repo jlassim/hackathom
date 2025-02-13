@@ -39,6 +39,9 @@ plt.title('Top 10 Hashtags by Frequency')
 plt.xlabel('Frequency')
 plt.ylabel('Hashtag')
 plt.show()
+# Convert to DataFrame for better visualization
+top_hashtags_df = pd.DataFrame(top_hashtags, columns=['Hashtag', 'Count'])
+top_hashtags_df.to_csv('top_trending_hashtags.csv', index=False)
 
 # Initialize a list to hold the hashtag pairs
 hashtag_pairs = []
@@ -86,6 +89,9 @@ plt.yticks(fontsize=10)
 # Adjust the plot's position to the right
 plt.subplots_adjust(left=0.2)  # Shifting the plot to the right
 plt.show()
+top_hashtag_pairs_df = pd.DataFrame(top_pairs_df, columns=['Hashtag Pair', 'Count'])
+top_hashtag_pairs_df.to_csv('top_trending_hashtag_pairs.csv', index=False)
+
 
 # Step 1: Convert string representations of lists into actual lists if needed
 df['All_Hashtags'] = df['All_Hashtags'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
